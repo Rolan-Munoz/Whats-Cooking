@@ -3,10 +3,12 @@ package com.rolanmunoz.whatscooking.infraestructure.persistence;
 import com.rolanmunoz.whatscooking.domain.entity.Role;
 import com.rolanmunoz.whatscooking.domain.persistence.RolePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class RolePersistenceImpl implements RolePersistence {
 
     private final RoleRepository roleRepository;
