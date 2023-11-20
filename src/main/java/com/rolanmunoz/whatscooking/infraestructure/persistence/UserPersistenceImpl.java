@@ -30,6 +30,11 @@ public class UserPersistenceImpl implements UserPersistence {
     }
 
     @Override
+    public Optional<User> getByName(String name) {
+        return this.userRepository.findByName(name);
+    }
+
+    @Override
     public User saveUser(User user) {
         return this.userRepository.save(user);
     }
@@ -47,4 +52,8 @@ public class UserPersistenceImpl implements UserPersistence {
             throw new EntityNotFoundException("User not found with id " + user.getId());
         }
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return userRepository.existsByName(name);    }
 }

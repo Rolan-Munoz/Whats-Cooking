@@ -6,8 +6,10 @@ import java.util.Optional;
 public interface UserPersistence {
     List<User> getAllUsers();
     Optional<User> getUserById(Long idUser);
+    Optional<User> getByName(String name);
     User saveUser(User user);
     void deleteUser(Long idUser);
     User updateUser(User user);
+    boolean existsByName(String name);
 
 }

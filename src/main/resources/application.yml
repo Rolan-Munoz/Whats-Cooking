@@ -15,8 +15,13 @@ spring:
     main:
       allow-circular-references: true
 
-  server:
-    servlet:
-      context-path: /whatscooking
+server:
+  servlet:
+    context-path: /api
+  error:
+    whitelabel:
+      enabled: false
+jwt:
+  secret: bXlTZWN1cmVKV1RTZWNyZXRLZXlXaXRoMjU2Qml0cwCfgS==
 
 

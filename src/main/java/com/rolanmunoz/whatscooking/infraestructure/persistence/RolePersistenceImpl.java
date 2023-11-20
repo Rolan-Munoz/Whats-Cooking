@@ -37,4 +37,9 @@ public class RolePersistenceImpl implements RolePersistence {
     public void deleteRole(Long idRole) {
         this.roleRepository.deleteById(idRole);
     }
+
+    @Override
+    public Optional<Role> findByName(String name) {
+        return roleRepository.findByName(name);
+    }
 }

@@ -2,6 +2,10 @@ package com.rolanmunoz.whatscooking.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -9,34 +13,41 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_user;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50, unique = true)
     private String name;
 
     @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 50)
+    @Column(name = "password", nullable = false, length = 512)
     private String password;
 
     @Lob
     @Column(name = "photo")
     private byte[] photo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_user"),
+    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"))
+    private List<Role> roles = new ArrayList<>();
+
+
+
+
+
 
     public User() {
     }
 
+
     public Long getId() {
-        return id;
+        return id_user;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long user_id) {
+        this.id_user = id_user;
     }
 
     public String getName() {
@@ -55,9 +66,11 @@ public class User {
         this.email = email;
     }
 
+
     public String getPassword() {
         return password;
     }
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -71,11 +84,12 @@ public class User {
         this.photo = photo;
     }
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
+

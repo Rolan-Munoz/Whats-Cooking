@@ -1,9 +1,11 @@
 package com.rolanmunoz.whatscooking.application.dto;
 
 
+import com.rolanmunoz.whatscooking.domain.entity.Role;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDTO implements Serializable {
 
@@ -12,8 +14,9 @@ public class UserDTO implements Serializable {
     private String email;
     private String password;
     private byte[] photo;
-    private Long roleId;
-    private String roleName;
+    private List<RoleDTO> roles;
+
+
 
     public UserDTO() {
     }
@@ -58,19 +61,11 @@ public class UserDTO implements Serializable {
         this.photo = photo;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public List<RoleDTO> getRoles() {
+        return roles;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoles(List<RoleDTO> roles) {
+        this.roles = roles;
     }
 }

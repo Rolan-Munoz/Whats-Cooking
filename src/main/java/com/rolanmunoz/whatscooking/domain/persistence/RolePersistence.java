@@ -7,4 +7,5 @@ public interface RolePersistence {
     Optional<Role> getRoleById(Long idRole);
     Role saveRole(Role role);
     void deleteRole(Long idRole);
+    Optional<Role> findByName(String name);
 }
