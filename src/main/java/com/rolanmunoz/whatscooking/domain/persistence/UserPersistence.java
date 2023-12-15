@@ -11,5 +11,8 @@ public interface UserPersistence {
     void deleteUser(Long idUser);
     User updateUser(User user);
     boolean existsByName(String name);
+    Optional<User> getByEmail(String email);
+
+
 
 }

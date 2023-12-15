@@ -10,4 +10,7 @@ public interface UserService {
     UserDTO saveUser(UserDTO userDTO);
     void deleteUser(Long idUser);
     UserDTO updateUser(UserDTO userDTO);
+
+    Optional<UserDTO> getByEmail(String email);
+
 }

@@ -7,11 +7,9 @@ import com.rolanmunoz.whatscooking.domain.entity.User;
 import com.rolanmunoz.whatscooking.domain.persistence.RolePersistence;
 import com.rolanmunoz.whatscooking.domain.persistence.UserPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -99,4 +97,9 @@ public class UserServiceImpl implements UserService {
         return this.userMapper.toDto(updatedUser);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<UserDTO> getByEmail(String email) {
+        return this.userPersistence.getByEmail(email).map(userMapper::toDto);
+    }
 }

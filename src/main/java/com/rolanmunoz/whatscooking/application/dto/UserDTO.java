@@ -15,6 +15,7 @@ public class UserDTO implements Serializable {
     private String password;
     private byte[] photo;
     private List<RoleDTO> roles;
+    private List<RecipeDTO> recipes;
 
 
 
@@ -67,5 +68,13 @@ public class UserDTO implements Serializable {
 
     public void setRoles(List<RoleDTO> roles) {
         this.roles = roles;
+    }
+
+    public List<RecipeDTO> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<RecipeDTO> recipes) {
+        this.recipes = recipes;
     }
 }

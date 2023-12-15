@@ -27,7 +27,7 @@ public class UserRestController {
 
 
     @GetMapping(value = "/admin/users", produces = "application/json")
-    ResponseEntity<List<UserDTO>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = this.userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -81,6 +81,8 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 
 }
 

@@ -65,9 +65,12 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/recipes/**").permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/user/**").hasAuthority("USER")
                 .requestMatchers("/users/{id}").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/users/{id}/recipes").hasAuthority("USER")
+                .requestMatchers("/users/{userId}/recipes/{id}").hasAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
