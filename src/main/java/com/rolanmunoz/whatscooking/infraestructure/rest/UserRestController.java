@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class UserRestController {
 
     private final UserService userService;
@@ -40,7 +41,7 @@ public class UserRestController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             // Comprueba si el usuario que hace la solicitud es el mismo que el usuario al que se está accediendo
-            if (principal.getName().equals(userDTO.getEmail()) || ((Collection<?>) authorities).contains(new SimpleGrantedAuthority("ADMIN"))) {
+            if (principal != null && principal.getName().equals(userDTO.getEmail()) || ((Collection<?>) authorities).contains(new SimpleGrantedAuthority("ADMIN"))) {
                 return new ResponseEntity<>(userDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);

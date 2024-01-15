@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -64,6 +65,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers(String.valueOf(RequestMethod.OPTIONS), "/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/recipes/**").permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")

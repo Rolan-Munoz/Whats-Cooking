@@ -29,6 +29,18 @@ public class CustomUsersDetailsService implements UserDetailsService {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
+    public Long getId(String username) {
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return user.getId();
+    }
+
+    public List<String> getRoles(String username) {
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // Asume que Role tiene un método getName() que devuelve el nombre del rol
+        return user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
