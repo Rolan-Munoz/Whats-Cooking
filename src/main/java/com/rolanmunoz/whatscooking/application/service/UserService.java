@@ -13,4 +13,9 @@ public interface UserService {
 
     Optional<UserDTO> getByEmail(String email);
 
+    boolean existsByName(String name);
+
+    boolean existsByEmail(String email);
+
+
 }

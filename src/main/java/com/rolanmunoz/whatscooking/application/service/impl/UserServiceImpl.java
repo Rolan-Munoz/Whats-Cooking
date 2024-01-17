@@ -102,4 +102,16 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> getByEmail(String email) {
         return this.userPersistence.getByEmail(email).map(userMapper::toDto);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsByEmail(String email) {
+        return userPersistence.existsByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsByName(String name) {
+        return userPersistence.existsByName(name);
+    }
 }

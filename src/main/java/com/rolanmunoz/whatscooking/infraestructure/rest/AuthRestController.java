@@ -12,11 +12,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 
 @RestController
@@ -58,6 +57,19 @@ public class AuthRestController {
             return new ResponseEntity<>("Credenciales incorrectas", HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping(value = "/auth/existsByName/{name}", produces = "application/json")
+    public ResponseEntity<Boolean> existsByName(@PathVariable String name) {
+        Boolean exists = this.userService.existsByName(name);
+        return new ResponseEntity<>(exists, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/auth/getByEmail/{email}", produces = "application/json")
+    public ResponseEntity<Boolean> existsByEmail(@PathVariable String email) {
+        Boolean exists = this.userService.existsByEmail(email);
+        return new ResponseEntity<>(exists, HttpStatus.OK);
+    }
+
 
 
 }

@@ -62,4 +62,9 @@ public class UserPersistenceImpl implements UserPersistence {
         return this.userRepository.findByEmail(email);
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
+
 }

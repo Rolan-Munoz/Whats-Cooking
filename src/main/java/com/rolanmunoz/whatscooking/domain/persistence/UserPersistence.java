@@ -13,6 +13,8 @@ public interface UserPersistence {
     boolean existsByName(String name);
     Optional<User> getByEmail(String email);
 
+    boolean existsByEmail(String email);
+
 
 
 }
