@@ -4,6 +4,8 @@ import com.rolanmunoz.whatscooking.domain.entity.Recipe;
 import com.rolanmunoz.whatscooking.domain.persistence.RecipePersistence;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class RecipePersistenceImpl implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getAllRecipes() {
-        return this.recipeRepository.findAll();
+    public Page<Recipe> getAllRecipes(Pageable pageable) {
+        return this.recipeRepository.findAll(pageable);
     }
 
     @Override
@@ -35,8 +37,8 @@ public class RecipePersistenceImpl implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getRecipeByTittle(String tittle) {
-        return this.recipeRepository.findByTittleContaining(tittle);
+    public Page<Recipe> getRecipeByTittle(String tittle, Pageable pageable) {
+        return this.recipeRepository.findByTittleContaining(tittle, pageable);
     }
 
     @Override

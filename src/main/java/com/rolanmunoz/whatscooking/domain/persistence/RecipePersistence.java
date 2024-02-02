@@ -1,15 +1,17 @@
 package com.rolanmunoz.whatscooking.domain.persistence;
 
 import com.rolanmunoz.whatscooking.domain.entity.Recipe;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface RecipePersistence {
-    List<Recipe> getAllRecipes();
+    Page<Recipe> getAllRecipes(Pageable pageable);
     Optional<Recipe> getRecipeById(Long idRecipe);
 
-    List<Recipe> getRecipeByTittle(String tittle);
+    Page<Recipe> getRecipeByTittle(String tittle, Pageable pageable);
     List<Recipe> getAllRecipesFromUser(Long idUser);
     Recipe saveRecipe(Recipe recipe);
     void deleteRecipe(Long idRecipe);

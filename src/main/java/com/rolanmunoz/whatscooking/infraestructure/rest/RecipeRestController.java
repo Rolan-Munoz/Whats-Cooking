@@ -4,11 +4,17 @@ import com.rolanmunoz.whatscooking.application.dto.RecipeDTO;
 import com.rolanmunoz.whatscooking.application.service.RecipeService;
 import com.rolanmunoz.whatscooking.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +32,11 @@ public class RecipeRestController {
     }
 
     @GetMapping(value = "/recipes", produces = "application/json")
-    public ResponseEntity<List<RecipeDTO>> getAllRecipes() {
-        List<RecipeDTO> recipes = this.recipeService.getAllRecipes();
+    public ResponseEntity<Page<RecipeDTO>> getAllRecipes(Pageable pageable) {
+        Page<RecipeDTO> recipes = this.recipeService.getAllRecipes(pageable);
         return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
+
 
     @GetMapping(value = "/recipes/{id}", produces = "application/json")
     public ResponseEntity<RecipeDTO> getRecipeById(@PathVariable Long id) {
@@ -39,14 +46,15 @@ public class RecipeRestController {
     }
 
     @GetMapping(value = "/recipes/tittle/{tittle}", produces = "application/json")
-    public ResponseEntity<List<RecipeDTO>> getRecipeByTittle(@PathVariable String tittle) {
-        List<RecipeDTO> recipes = this.recipeService.getRecipeByTittle(tittle);
+    public ResponseEntity<Page<RecipeDTO>> getRecipeByTittle(@PathVariable String tittle, Pageable pageable) {
+        Page<RecipeDTO> recipes = this.recipeService.getRecipeByTittle(tittle, pageable);
         if (recipes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
+        } else {
             return new ResponseEntity<>(recipes, HttpStatus.OK);
         }
     }
+
     @GetMapping(value = "/users/{idUser}/recipes", produces = "application/json")
     public ResponseEntity<List<RecipeDTO>> getAllRecipesFromUser(@PathVariable Long idUser) {
         List<RecipeDTO> recipes = this.recipeService.getAllRecipesFromUser(idUser);
@@ -90,6 +98,8 @@ public class RecipeRestController {
 
     @GetMapping(value = "/users/{userId}/recipes/{id}", produces = "application/json")
     public ResponseEntity<RecipeDTO> getRecipeByIdFromUser(@PathVariable Long userId, @PathVariable Long id, Principal principal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         if (principal.getName().equals(this.userService.getUserById(userId).get().getEmail())) {
             Optional<RecipeDTO> recipe = this.recipeService.getRecipeByIdFromUser(userId, id);
             return recipe.map(recipeDTO -> new ResponseEntity<>(recipeDTO, HttpStatus.OK))

@@ -8,6 +8,8 @@ import com.rolanmunoz.whatscooking.domain.entity.User;
 import com.rolanmunoz.whatscooking.domain.persistence.RecipePersistence;
 import com.rolanmunoz.whatscooking.domain.persistence.UserPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +33,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<RecipeDTO> getAllRecipes() {
-        List<Recipe> recipes = this.recipePersistence.getAllRecipes();
-        return this.recipeMapper.toDto(recipes);
+    public Page<RecipeDTO> getAllRecipes(Pageable pageable) {
+        Page<Recipe> recipes = this.recipePersistence.getAllRecipes(pageable);
+        return recipes.map(this.recipeMapper::toDto);
     }
+
 
     @Transactional(readOnly = true)
     @Override
@@ -44,10 +47,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<RecipeDTO> getRecipeByTittle(String tittle) {
-        return this.recipePersistence.getRecipeByTittle(tittle).stream().
-                map(recipeMapper::toDto).collect(Collectors.toList());
+    public Page<RecipeDTO> getRecipeByTittle(String tittle, Pageable pageable) {
+        Page<Recipe> recipes = this.recipePersistence.getRecipeByTittle(tittle, pageable);
+        return recipes.map(recipeMapper::toDto);
     }
+
 
     @Transactional(readOnly = true)
     @Override
