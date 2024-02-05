@@ -73,6 +73,13 @@ public class SecurityConfig {
                 .requestMatchers("/users/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers("/users/{id}/recipes").hasAuthority("USER")
                 .requestMatchers("/users/{userId}/recipes/{id}").hasAuthority("USER")
+                .requestMatchers("/favorites/{userId}/{recipeId}").hasAuthority("USER")
+                .requestMatchers("/favorites/{userId}/{recipeId}/isFavorite").hasAuthority("USER")
+                .requestMatchers("/favorites/{userId}").hasAuthority("USER")
+                .requestMatchers("/comments/{userId}/{recipeId}").hasAuthority("USER")
+                .requestMatchers("/comments/{commentId}").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/comments/user/{userId}").hasAuthority("USER")
+                .requestMatchers("/comments/recipe/{recipeId}").hasAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
