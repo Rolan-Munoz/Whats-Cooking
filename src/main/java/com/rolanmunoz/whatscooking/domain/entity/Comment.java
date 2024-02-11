@@ -1,6 +1,8 @@
 package com.rolanmunoz.whatscooking.domain.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -23,7 +25,9 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Recipe recipe;
+
 
     public Comment() {
     }

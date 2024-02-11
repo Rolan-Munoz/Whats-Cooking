@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/comments")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class CommentRestController {
 
     private final CommentService commentService;
@@ -27,23 +28,28 @@ public class CommentRestController {
     }
 
     @PostMapping("/{userId}/{recipeId}")
-    public ResponseEntity<CommentDTO> addComment(@PathVariable Long userId, @PathVariable Long recipeId, @RequestBody String content, Principal principal) {
+    public ResponseEntity<CommentDTO> addComment(@PathVariable Long userId, @PathVariable Long recipeId, @RequestBody CommentDTO comment, Principal principal) {
         Optional<UserDTO> optionalUser = this.userService.getUserById(userId);
         if (optionalUser.isPresent() && principal.getName().equals(optionalUser.get().getEmail())) {
-            CommentDTO commentDTO = commentService.addComment(userId, recipeId, content);
+            CommentDTO commentDTO = commentService.addComment(userId, recipeId, comment.getText());
             return new ResponseEntity<>(commentDTO, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
-    @DeleteMapping("/{commentId}")
+
+    @DeleteMapping("/{commentId}/remove")
     public ResponseEntity<Void> removeComment(@PathVariable Long commentId, Principal principal) {
         Optional<CommentDTO> optionalComment = this.commentService.getCommentById(commentId);
         if (optionalComment.isPresent()) {
             Long userId = optionalComment.get().getUserId();
             Optional<UserDTO> optionalUser = this.userService.getUserById(userId);
-            if (optionalUser.isPresent() && principal.getName().equals(optionalUser.get().getEmail())) {
+            boolean isCommentAuthor = principal.getName().equals(optionalUser.get().getEmail());
+            Optional<UserDTO> optionalPrincipalUser = this.userService.getByEmail(principal.getName());
+            boolean isAdmin = optionalPrincipalUser.get().getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+
+            if (isCommentAuthor || isAdmin) {
                 commentService.removeComment(commentId);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
@@ -53,6 +59,7 @@ public class CommentRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
 
     @GetMapping("/user/{userId}")

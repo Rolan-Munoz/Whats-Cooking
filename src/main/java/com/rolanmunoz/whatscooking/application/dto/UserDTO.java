@@ -16,6 +16,7 @@ public class UserDTO implements Serializable {
     private byte[] photo;
     private List<RoleDTO> roles;
     private List<RecipeDTO> recipes;
+    private List<FavoriteDTO> favorites;
 
 
 
@@ -76,5 +77,13 @@ public class UserDTO implements Serializable {
 
     public void setRecipes(List<RecipeDTO> recipes) {
         this.recipes = recipes;
+    }
+
+    public List<FavoriteDTO> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<FavoriteDTO> favorites) {
+        this.favorites = favorites;
     }
 }

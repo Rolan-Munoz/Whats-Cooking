@@ -1,5 +1,7 @@
 package com.rolanmunoz.whatscooking.application.dto;
 
+import com.rolanmunoz.whatscooking.domain.entity.User;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,6 +13,15 @@ public class RecipeDTO implements Serializable {
     private String instructions;
     private byte[] image;
     private byte[] video;
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public RecipeDTO() {
     }
@@ -69,5 +80,9 @@ public class RecipeDTO implements Serializable {
 
     public void setVideo(byte[] video) {
         this.video = video;
+    }
+
+    public void setUser(User user) {
+        this.userId = user.getId();
     }
 }

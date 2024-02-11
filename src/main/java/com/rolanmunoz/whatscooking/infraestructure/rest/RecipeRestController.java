@@ -1,6 +1,7 @@
 package com.rolanmunoz.whatscooking.infraestructure.rest;
 
 import com.rolanmunoz.whatscooking.application.dto.RecipeDTO;
+import com.rolanmunoz.whatscooking.application.dto.UserDTO;
 import com.rolanmunoz.whatscooking.application.service.RecipeService;
 import com.rolanmunoz.whatscooking.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,15 +77,18 @@ public class RecipeRestController {
         }
     }
 
-    @DeleteMapping(value = "/users/{userId}/recipes/{id}", produces = "application/json")
+    @DeleteMapping(value = "/users/{userId}/recipes/{id}/remove", produces = "application/json")
     public ResponseEntity<Void> deleteRecipe(@PathVariable Long userId, @PathVariable Long id, Principal principal) {
-        if (principal.getName().equals(this.userService.getUserById(userId).get().getEmail())) {
+        Optional<UserDTO> optionalUser = this.userService.getByEmail(principal.getName());
+        boolean isAdmin = optionalUser.get().getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+        if (principal.getName().equals(this.userService.getUserById(userId).get().getEmail()) || isAdmin) {
             this.recipeService.deleteRecipe(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
+
 
     @PutMapping(value = "/users/{userId}/recipes/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<RecipeDTO> updateRecipe(@PathVariable Long userId, @PathVariable Long id, @RequestBody RecipeDTO recipeDTO, Principal principal) {

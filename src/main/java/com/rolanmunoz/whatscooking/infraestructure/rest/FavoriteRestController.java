@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/favorites")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class FavoriteRestController {
 
     private final FavoriteService favoriteService;
